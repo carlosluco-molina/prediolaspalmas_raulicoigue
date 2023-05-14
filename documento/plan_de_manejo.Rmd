@@ -9,13 +9,12 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(readxl)
 library(broom)
-options(kableExtra.latex.load_packages = FALSE)
 library(kableExtra)
 ```
 
 # Introducción
 
-Este documento contiene información dasómetrica de dos plantaciones ubicadas en el predio Las Palmas, Valdivia Chile. Especificamente, existe una plantación de Coihue-Olivillo y una de Raulí. 
+Este documento contiene información dasómetrica de dos plantaciones ubicadas en el predio Las Palmas, Valdivia Chile. Especificamente, existe una plantación de Coihue-Olivillo y de Raulí. 
 
 # Métodos
 
@@ -25,7 +24,14 @@ hacer mapa y descripicón de área de estudio
 
 ## Ánalisis de datos.
 
-En cada plantación se establecieron 5 parcelas de 500 $m^{2}$ cada una, donde se registró la especie, su diamétro a la altura del pecho (**dap**), posición sociológica, sanidad y forma (en una escala de 1 a 3), además se realizó la medición de la altura de una muestra de Raulí y Coihue (Cuadro 1 ) para poder predecir la altura y volumen de la plantación 
+En cada plantación se establecieron 5 parcelas de 500 $m^{2}$ cada una, donde se registró la especie, diamétro a la altura del pecho (**Dap**), posición sociológica, sanidad y forma (en una escala de 1 a 3. Además, se realizó la medición de la altura total (**Ht**) de una muestra de Raulí y Coihue (Cuadro 1) y un ajuste y evaluación de modelos altura-diámetro para poder predecir la altura del total de individuos y el volumen de la plantación (Cuadro 2).
+```{r,echo=FALSE,message=FALSE}
+ cuadro1<-read_excel("C:/Users/carlo/Desktop/laspalmas_raulicoigue/prediolaspalmas_raulicoigue/datos/datos_con_volumen.xlsx") %>%           filter(!is.na(ht),ht!="NA") %>% 
+  mutate(ht=as.numeric(ht)) %>% 
+  group_by(spp,plantacion) %>% summarise(n=n(),min=min(ht),máx=max(ht),x=round(mean(ht),1),sd=round(sd(ht),1)) %>% select(-plantacion) %>% rename(Especie=spp)
+cuadro1 %>% kbl(booktabs = TRUE)
+```
+
 
 El procesamiento de datos consitio en un resumen de las principales variables dasometricas a nivel de rodal y a nivel de parcela. 
 
